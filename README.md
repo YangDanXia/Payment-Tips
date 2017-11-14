@@ -6,6 +6,7 @@
 
 ## By HtmlUnit
 [By HtmlUnit](https://github.com/YangDanXia/Payment-Tips/tree/master/By%20HtmlUnit)
+
   HtmlUnit 是一款开源的java 页面分析工具，读取页面后，可以有效的使用htmlunit分析页面上的内容。项目可以模拟浏览器运行，被誉为java浏览器的开源实现。是一个没有界面的浏览器，运行速度迅速。
   由于HtmlUnit是无界面操作，所以在执行程序时并不知道程序的执行过程，在执行完程序后就提示：网络异常（理想的结果应该是提示登录成功）。
   查阅了资料，有说是因为需要登录的网站为防止机器操作，有严格的认证机制：
@@ -16,6 +17,7 @@
   
 ## By Selenium
 [By Selenium](https://github.com/YangDanXia/Payment-Tips/tree/master/By%20Selenium)
+
   Selenium 是一个用于Web应用程序测试的工具。Selenium测试直接运行在浏览器中，就像真正的用户在操作一样。支持的浏览器包括IE（7, 8, 9, 10, 11），Mozilla Firefox，Safari，Google Chrome，Opera等。
   与其他测试工具相比，使用 Selenium 的最大好处是：
   - Selenium 测试直接在浏览器中运行，就像真实用户所做的一样。Selenium 测试可以在 Windows、Linux 和 Macintosh上的 Internet Explorer、Mozilla 和 Firefox 中运行。其他测试工具都不能覆盖如此多的平台。
