@@ -27,5 +27,5 @@
 ## 二、正式开始
 By Selenium And BrowserMob-Proxy  
 BrowserMob-Proxy是一个不错的代理，可以直接下载JAR包后导入到项目内，也可以在Maven内添加依赖关系。  
-JAR下载地址：[下载地址](http://bmp.lightbody.net/)  
+JAR下载地址：[JAR包](http://bmp.lightbody.net/)    
 GitHub项目说明：[BrowserMob-Proxy的使用说明](https://github.com/lightbody/browsermob-proxy)
