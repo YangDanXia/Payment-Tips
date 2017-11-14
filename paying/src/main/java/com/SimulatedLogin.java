@@ -16,6 +16,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 
@@ -23,8 +25,7 @@ public class SimulatedLogin {
     public static void main(String[] args) throws InterruptedException {
 
         String url = "https://authem14.alipay.com/login/index.htm";
-        final String cookieValue = "****";
-
+        final String cookieValue = "***";
 
         BrowserMobProxy proxy = new BrowserMobProxyServer();
         proxy.start(8181);
@@ -58,15 +59,35 @@ public class SimulatedLogin {
 
         //找到密码输入栏
         WebElement elemPassword = driver.findElement(By.name("password_rsainput"));
-        SimulatedLogin.wait_input(elemPassword,"****");
+        SimulatedLogin.wait_input(elemPassword,"***");
         Thread.sleep(1);
 
         // 获取页面元素:点击确认按钮
         WebElement elemSubmit = driver.findElement(By.id("J-login-btn"));
         Thread.sleep(2);
         elemSubmit.click();
+
+        // 等待加载完成
+        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+        //找到第一条交易记录的位置
+        WebElement elemAmount = driver.findElements(By.className("amount-pay")).get(0);
+        // 获取交易金额
+        String amountValue = elemAmount.getText();
+        System.out.println(amountValue);
+
+        SimulatedLogin.task(driver);
+
+
+
     }
 
+    /***
+     *
+     * "在输入用户名和密码的时候不能一次性输入，要模拟人的动作，增大每次输入的间隔时间"
+     * @param elem "输入内容所在位置"
+     * @param content "输入的内容"
+     * @throws InterruptedException
+     */
     private static void wait_input(WebElement elem,String content) throws InterruptedException {
         char[] str = content.toCharArray();
         for (int i=0;i<str.length;i++){
@@ -74,5 +95,33 @@ public class SimulatedLogin {
             elem.sendKeys(c);
             Thread.sleep(1);
         }
+    }
+
+
+    /***
+     *
+     * 定时任务，每隔一秒刷新一次界面，获取最新的交易记录
+     * @param driver "浏览器驱动"
+     */
+    private static void task(WebDriver driver){
+        final WebDriver drivers = driver;
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                // 刷新界面
+                drivers.navigate().refresh();
+                // 等待加载完成
+                drivers.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+                //找到第一条交易记录的位置
+                WebElement elemAmount = drivers.findElements(By.className("amount-pay")).get(0);
+                // 获取交易金额
+                String amountValue = elemAmount.getText();
+                System.out.println(amountValue);
+            }
+        };
+        Timer timer = new Timer();
+        long delay = 1000;
+        long period = 1000;
+        timer.scheduleAtFixedRate(task,delay,period);
     }
 }
