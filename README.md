@@ -56,8 +56,18 @@ GitHub项目说明：[BrowserMob-Proxy的使用说明](https://github.com/lightb
  ````
 <hr>
 由于在下载Selenium 和 BrowserMob-Proxy 的jar包时会自动下载与其有关的其他依赖包，当编译执行程序时就会有错误提示，若要解决错误，还需要添加以下两个依赖关系：   
-
-详细参考：http://blog.csdn.net/qijiqiguai/article/details/73930140?locationNum=14&fps=1
+````
+<dependency>
+   <groupId>org.slf4j</groupId>
+   <artifactId>slf4j-log4j12</artifactId>
+   <version>1.7.21</version>
+</dependency>
+<dependency>
+   <groupId>com.google.guava</groupId>
+   <artifactId>guava</artifactId>
+   <version>21.0</version>
+</dependency>
+````
 
 ## 三、导出Maven项目
 在完成了项目后，我们可以将项目导出放在服务器上或者其他电脑上执行。在这里我用的是maven-assembly-plugin插件进行打包。要使用该插件，需要配置pom.xml文件：
