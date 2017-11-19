@@ -55,7 +55,7 @@ GitHub项目说明：[BrowserMob-Proxy的使用说明](https://github.com/lightb
  });
  ````
 <hr>
-由于在下载Selenium 和 BrowserMob-Proxy 的jar包时会自动下载与其有关的其他依赖包，当编译执行程序时就会有错误提示，若要解决错误，还需要添加以下两个依赖关系：
+由于在下载Selenium 和 BrowserMob-Proxy 的jar包时会自动下载与其有关的其他依赖包，当编译执行程序时就会有错误提示，若要解决错误，还需要添加以下两个依赖关系：  
 ````
 <dependency>
    <groupId>org.slf4j</groupId>
@@ -67,7 +67,7 @@ GitHub项目说明：[BrowserMob-Proxy的使用说明](https://github.com/lightb
    <artifactId>guava</artifactId>
    <version>21.0</version>
 </dependency>
-````
+````  
 详细参考：http://blog.csdn.net/qijiqiguai/article/details/73930140?locationNum=14&fps=1
 
 ## 三、导出Maven项目
@@ -98,6 +98,6 @@ GitHub项目说明：[BrowserMob-Proxy的使用说明](https://github.com/lightb
  </build>
 ````
 打开电脑终端Win+R,进入到工程的根目录，输入：
-`mvn package assembly:single`
+`mvn package assembly:single`  
 打包后会在target目录下生成一个xxx-jar-with-dependencies.jar文件，这个文件不但包含了自己项目中的代码和资源，还包含了所有依赖包的内容。所以可以直接通过java -jar来运行。  
 详细参考：http://blog.csdn.net/xiao__gui/article/details/47341385
