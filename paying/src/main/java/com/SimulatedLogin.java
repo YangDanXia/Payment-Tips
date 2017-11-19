@@ -15,6 +15,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.NoSuchElementException;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -25,7 +26,8 @@ public class SimulatedLogin {
     public static void main(String[] args) throws InterruptedException {
 
         String url = "https://authem14.alipay.com/login/index.htm";
-        final String cookieValue = "***";
+        final String cookieValue = "...";
+
 
         BrowserMobProxy proxy = new BrowserMobProxyServer();
         proxy.start(8181);
@@ -54,12 +56,12 @@ public class SimulatedLogin {
 
         //在界面找到用户名输入栏
         WebElement elemUsername = driver.findElement(By.name("logonId"));
-        SimulatedLogin.wait_input(elemUsername,"***");
+        SimulatedLogin.wait_input(elemUsername,"....");
         Thread.sleep(1);
 
         //找到密码输入栏
         WebElement elemPassword = driver.findElement(By.name("password_rsainput"));
-        SimulatedLogin.wait_input(elemPassword,"***");
+        SimulatedLogin.wait_input(elemPassword,"....");
         Thread.sleep(1);
 
         // 获取页面元素:点击确认按钮
@@ -69,15 +71,17 @@ public class SimulatedLogin {
 
         // 等待加载完成
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-        //找到第一条交易记录的位置
-        WebElement elemAmount = driver.findElements(By.className("amount-pay")).get(0);
-        // 获取交易金额
-        String amountValue = elemAmount.getText();
-        System.out.println(amountValue);
 
+
+
+        if(!SimulatedLogin.isElemAppear(driver,"amount-pay")){
+            System.out.println("请输入手机验证码");
+            proxy.stop();
+            driver.quit();
+            return;
+        }
+        // 每秒刷新一次界面，并获取数据
         SimulatedLogin.task(driver);
-
-
 
     }
 
@@ -108,20 +112,38 @@ public class SimulatedLogin {
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                // 刷新界面
-                drivers.navigate().refresh();
-                // 等待加载完成
-                drivers.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
                 //找到第一条交易记录的位置
                 WebElement elemAmount = drivers.findElements(By.className("amount-pay")).get(0);
                 // 获取交易金额
                 String amountValue = elemAmount.getText();
                 System.out.println(amountValue);
+                // 刷新界面
+                drivers.navigate().refresh();
+                // 等待加载完成
+                drivers.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+
             }
         };
         Timer timer = new Timer();
         long delay = 1000;
         long period = 1000;
         timer.scheduleAtFixedRate(task,delay,period);
+    }
+
+    /***
+     *
+     * 检测元素是否存在
+     *
+     * @param driver "浏览器驱动"
+     * @param elem "要测试的元素"
+     * @return "存在则返回yes，不存在则返回false
+     */
+    private static boolean isElemAppear(WebDriver driver,String elem){
+        try{
+            driver.findElement(By.className(elem));
+            return true;
+        }catch (NoSuchElementException e){
+            return false;
+        }
     }
 }
