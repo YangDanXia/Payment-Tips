@@ -22,8 +22,7 @@
   在使用Selenium后，成功的进入了网站的下一个界面了，但是第一次登录强制一定要输入手机验证码，因此要完全实现登录进该网站，必须修改Headers,自行在Headers添加cookies，但是Selenium并不允许修改Headers内容，所以我找到了使用代理的方法来修改Headers。
   
   
-## 二、正式开始
-By Selenium And BrowserMob-Proxy  
+## 二、正式开始 / [By Selenium And BrowserMob-Proxy](https://github.com/YangDanXia/Payment-Tips/tree/master/paying)    
 BrowserMob-Proxy是一个不错的代理，可以直接下载JAR包后导入到项目内，也可以在Maven内添加依赖关系。  
 JAR下载地址：[JAR包](http://bmp.lightbody.net/)    
 GitHub项目说明：[BrowserMob-Proxy的使用说明](https://github.com/lightbody/browsermob-proxy)
@@ -40,6 +39,5 @@ GitHub项目说明：[BrowserMob-Proxy的使用说明](https://github.com/lightb
    <artifactId>browsermob-core</artifactId>
    <version>2.1.5</version>
 </dependency>
-
  ````
 
