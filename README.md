@@ -41,6 +41,16 @@ GitHub项目说明：[BrowserMob-Proxy的使用说明](https://github.com/lightb
 </dependency>
  ````
 在本程序里我使用的是有界面浏览器Chrome，可自行选择其他浏览器的驱动或者是无界面的PhantomJS.  
+若使用的是PhantomJS则需要添加依赖关系：   
+````
+        <dependency>
+            <groupId>com.codeborne</groupId>
+            <artifactId>phantomjsdriver</artifactId>
+            <version>1.4.3</version>
+        </dependency>
+ ````  
+ 要注意的是在使用有界面浏览器时，若添加了上述的关系记得删除后再调试，否则因为两者的冲突会报错  
+ 
 在这里为什么我要使用代理呢？是因为我需要修改header，需要在请求头里添加,而Selenium本身是不支持修改header的，所以只能借助BrowserMob-Proxy来实现。
 在header添加cookies的函数用法是：
 ````
@@ -68,7 +78,8 @@ GitHub项目说明：[BrowserMob-Proxy的使用说明](https://github.com/lightb
    <artifactId>guava</artifactId>
    <version>21.0</version>
 </dependency>
- ````
+ ````  
+ 
 
 ## 三、导出Maven项目
 在完成了项目后，我们可以将项目导出放在服务器上或者其他电脑上执行。在这里我用的是maven-assembly-plugin插件进行打包。要使用该插件，需要配置pom.xml文件：
