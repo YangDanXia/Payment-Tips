@@ -13,9 +13,8 @@ import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 //import org.openqa.selenium.chrome.ChromeDriver;
-//import org.openqa.selenium.firefox.FirefoxDriver;
-
-import org.openqa.selenium.phantomjs.PhantomJSDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.NoSuchElementException;
@@ -29,7 +28,7 @@ public class SimulatedLogin {
     public static void main(String[] args) throws InterruptedException {
 
         String url = "https://authem14.alipay.com/login/index.htm";
-        final String cookieValue = "...";
+        final String cookieValue = "cna=G9DrEYx8blUCAX1aMTlxWq5v; UM_distinctid=15d646859bc4c3-0414dbf0e13743-36624308-100200-15d646859bd1a2; isg=AmlpROLhFCXg_yhdw5tqScxleBVvJlJ8FA0B2QteQNCQ0ojkU4RDOO3K4kCf; unicard1.vm=\"K1iSL1mnW5bUr+aKP2Lc7w==\"; mobileSendTime=-1; credibleMobileSendTime=-1; ctuMobileSendTime=-1; riskMobileBankSendTime=-1; riskMobileAccoutSendTime=-1; riskMobileCreditSendTime=-1; riskCredibleMobileSendTime=-1; riskOriginalAccountMobileSendTime=-1; ctoken=HVo7jHv265RT3eOt; LoginForm=alipay_login_auth; alipay=\"K1iSL1mnW5bUr+aKP2Lc7zjRroAKXfsp3jwj15YTJZh6DZ/x\"; CLUB_ALIPAY_COM=2088022712180843; iw.userid=\"K1iSL1mnW5bUr+aKP2Lc7w==\"; ali_apache_tracktmp=\"uid=2088022712180843\"; session.cookieNameId=ALIPAYJSESSIONID; _hvn_login=1; CHAIR_SESS=K6iO619fGWnMOmQO_wFsrBC-Akxkpw3OlvniDkmJz3nz3yaIOVYcvpc8lKL9hMlDjv9_cCCDsQWK2P6EuOcPmPWTgkmro7CnjRNj1MEtqJktS7VtGsDIHk0r0yJXQP3F6baR2eBRZF2UBF5PHTcEYw==; spanner=Wgn2qdXz8Kjf8rKDhs69LM44jxpNoevV4EJoL7C0n0A=; zone=GZ00C; ALIPAYJSESSIONID=RZ24KNwb1JtQ9GqbNPaKO8M3xclSG1authRZ24GZ00; rtk=C39tiv5a2jnr84ZaM3uZcdEY0yUwbC/ncQRLO/1D/wlf6SHVOYf";
 
 
         BrowserMobProxy proxy = new BrowserMobProxyServer();
@@ -45,17 +44,17 @@ public class SimulatedLogin {
 //        System.setProperty("webdriver.chrome.driver","F:\\Git\\Payment-Tips\\paying\\lib\\chromedriver.exe");
 //        WebDriver driver = new ChromeDriver();
 
-        // 使用FireFox
-//        System.setProperty("webdriver.firefox.bin","firefox.exe");
+//         使用FireFox
+        System.setProperty("webdriver.firefox.bin","geckodriver");
         // 启动firefox的配置
-//        FirefoxProfile fp = new FirefoxProfile();
-//        WebDriver driver = new FirefoxDriver(fp);
-        // 打开一个干净的firefox
+        FirefoxProfile fp = new FirefoxProfile();
+        WebDriver driver = new FirefoxDriver(fp);
+//         打开一个干净的firefox
 //        WebDriver driver = new FirefoxDriver();
 
         // 使用PhantomJS
-        System.setProperty("phantomjs.binary.path","");
-        WebDriver driver = new PhantomJSDriver();
+//        System.setProperty("phantomjs.binary.path","phantomjs-2.1.1-linux-i686/bin/phantomjs");
+//        WebDriver driver = new PhantomJSDriver();
 
         proxy.addRequestFilter(new RequestFilter() {
             @Override
@@ -72,12 +71,12 @@ public class SimulatedLogin {
 
         //在界面找到用户名输入栏
         WebElement elemUsername = driver.findElement(By.name("logonId"));
-        SimulatedLogin.wait_input(elemUsername,"....");
+        SimulatedLogin.wait_input(elemUsername,"13420116914");
         Thread.sleep(1);
 
         //找到密码输入栏
         WebElement elemPassword = driver.findElement(By.name("password_rsainput"));
-        SimulatedLogin.wait_input(elemPassword,"....");
+        SimulatedLogin.wait_input(elemPassword,"ydx73735273.");
         Thread.sleep(1);
 
         // 获取页面元素:点击确认按钮
@@ -88,11 +87,13 @@ public class SimulatedLogin {
         // 等待加载完成
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 
+       // 获取当前地址URL
+        String current_url = driver.getCurrentUrl();
 
-
-        if(!SimulatedLogin.isElemAppear(driver,"amount-pay")){
+        if(current_url.indexOf("checkSecurity")>0){
             System.out.println("请输入手机验证码");
             proxy.stop();
+            driver.close();
             driver.quit();
             return;
         }
