@@ -12,9 +12,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-//import org.openqa.selenium.chrome.ChromeDriver;
-//import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.phantomjs.PhantomJSDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.NoSuchElementException;
@@ -41,16 +39,8 @@ public class SimulatedLogin {
         capabilities.setCapability(CapabilityType.PROXY, seleniumProxy);
 
         // 使用chrome
-//        System.setProperty("webdriver.chrome.driver","F:\\Git\\Payment-Tips\\paying\\lib\\chromedriver.exe");
-//        WebDriver driver = new ChromeDriver();
-
-//        使用火狐
-//        System.setProperty("webdriver.firefox.bin","F:\\Git\\Payment-Tips\\paying\\lib\\geckodriver.exe");
-//        WebDriver driver = new ChromeDriver();
-
-        // 使用PhantomJS
-        System.setProperty("phantomjs.binary.path","F:\\Git\\Payment-Tips\\paying\\lib\\phantomjs-2.1.1-windows\\bin\\phantomjs.exe");
-        WebDriver driver = new PhantomJSDriver();
+        System.setProperty("webdriver.chrome.driver","F:\\Git\\Payment-Tips\\paying\\lib\\chromedriver.exe");
+        WebDriver driver = new ChromeDriver();
 
         proxy.addRequestFilter(new RequestFilter() {
             @Override
@@ -62,7 +52,7 @@ public class SimulatedLogin {
 
         // 加载url
         driver.get(url);
-//        // 等待加载完成
+        // 等待加载完成
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 
         //在界面找到用户名输入栏
