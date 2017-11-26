@@ -13,8 +13,8 @@ import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 //import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxProfile;
+//import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.NoSuchElementException;
@@ -44,17 +44,13 @@ public class SimulatedLogin {
 //        System.setProperty("webdriver.chrome.driver","F:\\Git\\Payment-Tips\\paying\\lib\\chromedriver.exe");
 //        WebDriver driver = new ChromeDriver();
 
-//         使用FireFox
-        System.setProperty("webdriver.firefox.bin","geckodriver");
-        // 启动firefox的配置
-        FirefoxProfile fp = new FirefoxProfile();
-        WebDriver driver = new FirefoxDriver(fp);
-//         打开一个干净的firefox
-//        WebDriver driver = new FirefoxDriver();
+//        使用火狐
+//        System.setProperty("webdriver.firefox.bin","F:\\Git\\Payment-Tips\\paying\\lib\\geckodriver.exe");
+//        WebDriver driver = new ChromeDriver();
 
         // 使用PhantomJS
-//        System.setProperty("phantomjs.binary.path","phantomjs-2.1.1-linux-i686/bin/phantomjs");
-//        WebDriver driver = new PhantomJSDriver();
+        System.setProperty("phantomjs.binary.path","F:\\Git\\Payment-Tips\\paying\\lib\\phantomjs-2.1.1-windows\\bin\\phantomjs.exe");
+        WebDriver driver = new PhantomJSDriver();
 
         proxy.addRequestFilter(new RequestFilter() {
             @Override
