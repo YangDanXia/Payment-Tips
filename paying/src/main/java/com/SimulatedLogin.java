@@ -25,8 +25,8 @@ import java.util.concurrent.TimeUnit;
 public class SimulatedLogin {
     public static void main(String[] args) throws InterruptedException {
 
-        String url = "https://authem14.alipay.com/login/index.htm";
-        final String cookieValue = "cna=G9DrEYx8blUCAX1aMTlxWq5v; UM_distinctid=15d646859bc4c3-0414dbf0e13743-36624308-100200-15d646859bd1a2; isg=AmlpROLhFCXg_yhdw5tqScxleBVvJlJ8FA0B2QteQNCQ0ojkU4RDOO3K4kCf; unicard1.vm=\"K1iSL1mnW5bUr+aKP2Lc7w==\"; mobileSendTime=-1; credibleMobileSendTime=-1; ctuMobileSendTime=-1; riskMobileBankSendTime=-1; riskMobileAccoutSendTime=-1; riskMobileCreditSendTime=-1; riskCredibleMobileSendTime=-1; riskOriginalAccountMobileSendTime=-1; ctoken=HVo7jHv265RT3eOt; LoginForm=alipay_login_auth; alipay=\"K1iSL1mnW5bUr+aKP2Lc7zjRroAKXfsp3jwj15YTJZh6DZ/x\"; CLUB_ALIPAY_COM=2088022712180843; iw.userid=\"K1iSL1mnW5bUr+aKP2Lc7w==\"; ali_apache_tracktmp=\"uid=2088022712180843\"; session.cookieNameId=ALIPAYJSESSIONID; _hvn_login=1; CHAIR_SESS=K6iO619fGWnMOmQO_wFsrBC-Akxkpw3OlvniDkmJz3nz3yaIOVYcvpc8lKL9hMlDjv9_cCCDsQWK2P6EuOcPmPWTgkmro7CnjRNj1MEtqJktS7VtGsDIHk0r0yJXQP3F6baR2eBRZF2UBF5PHTcEYw==; spanner=Wgn2qdXz8Kjf8rKDhs69LM44jxpNoevV4EJoL7C0n0A=; zone=GZ00C; ALIPAYJSESSIONID=RZ24KNwb1JtQ9GqbNPaKO8M3xclSG1authRZ24GZ00; rtk=C39tiv5a2jnr84ZaM3uZcdEY0yUwbC/ncQRLO/1D/wlf6SHVOYf";
+        String url = "...";
+        final String cookieValue = "...";
 
 
         BrowserMobProxy proxy = new BrowserMobProxyServer();
@@ -57,12 +57,12 @@ public class SimulatedLogin {
 
         //在界面找到用户名输入栏
         WebElement elemUsername = driver.findElement(By.name("logonId"));
-        SimulatedLogin.wait_input(elemUsername,"13420116914");
+        SimulatedLogin.wait_input(elemUsername,"...");
         Thread.sleep(1);
 
         //找到密码输入栏
         WebElement elemPassword = driver.findElement(By.name("password_rsainput"));
-        SimulatedLogin.wait_input(elemPassword,"ydx73735273.");
+        SimulatedLogin.wait_input(elemPassword,"...");
         Thread.sleep(1);
 
         // 获取页面元素:点击确认按钮
