@@ -1,0 +1,24 @@
+Manifest-Version: 1.0
+Class-Path: libs/commons-exec-1.1.jar libs/cssparser-0.9.5.jar libs/xe
+ rcesImpl-2.9.1.jar libs/htmlunit-core-js-2.9.jar libs/netty-all-4.0.5
+ 1.Final.jar libs/bcprov-jdk15on-1.58.jar libs/commons-logging-1.1.1.j
+ ar libs/mitm-2.1.5.jar libs/commons-collections-3.2.1.jar libs/nekoht
+ ml-1.9.15.jar libs/littleproxy-1.1.0-beta-bmp-17.jar libs/jackson-cor
+ e-2.8.9.jar libs/selenium-java-2.16.1.jar libs/bcpkix-jdk15on-1.58.ja
+ r libs/jna-3.4.0.jar libs/dnsjava-2.1.8.jar libs/commons-lang3-3.5.ja
+ r libs/selenium-ie-driver-2.16.1.jar libs/commons-codec-1.4.jar libs/
+ jackson-databind-2.8.9.jar libs/httpmime-4.1.2.jar libs/htmlunit-2.9.
+ jar libs/commons-lang-2.6.jar libs/jzlib-1.1.3.jar libs/slf4j-api-1.7
+ .25.jar libs/selenium-chrome-driver-2.16.1.jar libs/cglib-nodep-2.1_3
+ .jar libs/serializer-2.7.1.jar libs/log4j-1.2.17.jar libs/browsermob-
+ core-2.1.5.jar libs/jcl-over-slf4j-1.7.25.jar libs/httpcore-4.1.2.jar
+  libs/jackson-annotations-2.8.9.jar libs/xml-apis-1.3.04.jar libs/gua
+ va-21.0.jar libs/selenium-android-driver-2.16.1.jar libs/commons-io-2
+ .0.1.jar libs/sac-1.3.jar libs/httpclient-4.1.2.jar libs/selenium-iph
+ one-driver-2.16.1.jar libs/selenium-support-2.16.1.jar libs/slf4j-log
+ 4j12-1.7.21.jar libs/selenium-htmlunit-driver-2.16.1.jar libs/xalan-2
+ .7.1.jar libs/selenium-api-2.16.1.jar libs/selenium-firefox-driver-2.
+ 16.1.jar libs/selenium-remote-driver-2.16.1.jar libs/json-20080701.ja
+ r libs/platform-3.4.0.jar
+Main-Class: com.ChromeLogin
+
