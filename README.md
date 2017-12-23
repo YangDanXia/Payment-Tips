@@ -48,8 +48,19 @@ GitHub项目说明：[BrowserMob-Proxy的使用说明](https://github.com/lightb
             <artifactId>phantomjsdriver</artifactId>
             <version>1.4.3</version>
         </dependency>
+        <dependency> //因为在下载phantomjsdriver时会自动下载httpclient和commons-exec，但两者的版本过低导致报错：NoClassFound，所以要更新版本
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-exec</artifactId>
+            <version>1.3</version>
+        </dependency>       
  ````  
- 要注意的是在使用有界面浏览器时，若添加了上述的关系记得删除后再调试，否则因为两者的冲突会报错  
+
+ 要注意的是在使用有界面浏览器时，若添加了上述的关系记得删除后再调试，否则因为两者的冲突会报错  
  
 在这里为什么我要使用代理呢？是因为我需要修改header，需要在请求头里添加,而Selenium本身是不支持修改header的，所以只能借助BrowserMob-Proxy来实现。
 在header添加cookies的函数用法是：
