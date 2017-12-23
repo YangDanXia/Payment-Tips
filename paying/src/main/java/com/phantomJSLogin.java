@@ -12,21 +12,19 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
+
+import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.NoSuchElementException;
 
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 
-public class SimulatedLogin {
+public class phantomJSLogin {
     public static void main(String[] args) throws InterruptedException {
 
-        String url = "...";
-        final String cookieValue = "...";
+        String url = "https://authem14.alipay.com/login/index.htm";
+        final String cookieValue = "cna=G9DrEYx8blUCAX1aMTlxWq5v; UM_distinctid=15d646859bc4c3-0414dbf0e13743-36624308-100200-15d646859bd1a2; isg=AmlpROLhFCXg_yhdw5tqScxleBVvJlJ8FA0B2QteQNCQ0ojkU4RDOO3K4kCf; unicard1.vm=\"K1iSL1mnW5bUr+aKP2Lc7w==\"; mobileSendTime=-1; credibleMobileSendTime=-1; ctuMobileSendTime=-1; riskMobileBankSendTime=-1; riskMobileAccoutSendTime=-1; riskMobileCreditSendTime=-1; riskCredibleMobileSendTime=-1; riskOriginalAccountMobileSendTime=-1; ctoken=R-cRvdBP0y5xeKHb; LoginForm=alipay_login_auth; alipay=\"K1iSL1mnW5bUr+aKP2Lc7zjRroAKXfsp3jwj15YTJZh6DZ/x\"; CLUB_ALIPAY_COM=2088022712180843; iw.userid=\"K1iSL1mnW5bUr+aKP2Lc7w==\"; ali_apache_tracktmp=\"uid=2088022712180843\"; session.cookieNameId=ALIPAYJSESSIONID; CHAIR_SESS=K6iO619fGWnMOmQO_wFsrBC-Akxkpw3OlvniDkmJz3nz3yaIOVYcvpc8lKL9hMlDjv9_cCCDsQWK2P6EuOcPmFkQ67GjGzKjDK52kpvsEIQ-xltd4QOMJK4uFNcAVdZH18WRt8JkByR-sV_gE3wVsQ==; spanner=Wgn2qdXz8Kjf8rKDhs69LM44jxpNoevV4EJoL7C0n0A=; zone=GZ00C; ALIPAYJSESSIONID=RZ24kPaG9203qaYAsXjAFC3esQ1piMauthRZ24GZ00; rtk=L0dyR+8OocgFzGgAb0PgQNq/2Y9EMLHYQchCtPvqHEKsVj/6tns";
 
 
         BrowserMobProxy proxy = new BrowserMobProxyServer();
@@ -39,8 +37,8 @@ public class SimulatedLogin {
         capabilities.setCapability(CapabilityType.PROXY, seleniumProxy);
 
         // 使用chrome
-        System.setProperty("webdriver.chrome.driver","F:\\Git\\Payment-Tips\\paying\\lib\\chromedriver.exe");
-        WebDriver driver = new ChromeDriver();
+        System.setProperty("phantomjs.binary.path","F:\\Git\\Payment-Tips\\paying\\lib\\phantomjs-2.1.1-windows\\bin\\phantomjs.exe");
+        WebDriver driver = new PhantomJSDriver();
 
         proxy.addRequestFilter(new RequestFilter() {
             @Override
@@ -55,15 +53,20 @@ public class SimulatedLogin {
         // 等待加载完成
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 
+        // 选择账密登录的方法
+        WebElement elemLoginMethod = driver.findElement(By.id("J-loginMethod-tabs")).findElements(By.tagName("li")).get(1);
+        Thread.sleep(2);
+        elemLoginMethod.click();
+
         //在界面找到用户名输入栏
         WebElement elemUsername = driver.findElement(By.name("logonId"));
-        SimulatedLogin.wait_input(elemUsername,"...");
-        Thread.sleep(1);
+        phantomJSLogin.wait_input(elemUsername,"13420116914");
+        Thread.sleep(10);
 
         //找到密码输入栏
         WebElement elemPassword = driver.findElement(By.name("password_rsainput"));
-        SimulatedLogin.wait_input(elemPassword,"...");
-        Thread.sleep(1);
+        phantomJSLogin.wait_input(elemPassword,"ydx73735273.");
+        Thread.sleep(10);
 
         // 获取页面元素:点击确认按钮
         WebElement elemSubmit = driver.findElement(By.id("J-login-btn"));
@@ -73,7 +76,7 @@ public class SimulatedLogin {
         // 等待加载完成
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 
-       // 获取当前地址URL
+        // 获取当前地址URL
         String current_url = driver.getCurrentUrl();
 
         if(current_url.indexOf("checkSecurity")>0){
@@ -84,7 +87,8 @@ public class SimulatedLogin {
             return;
         }
         // 每秒刷新一次界面，并获取数据
-        SimulatedLogin.task(driver);
+        ChromeLogin chrome = new ChromeLogin();
+        chrome.task(driver);
 
     }
 
@@ -100,53 +104,8 @@ public class SimulatedLogin {
         for (int i=0;i<str.length;i++){
             String c = String.valueOf(str[i]);
             elem.sendKeys(c);
-            Thread.sleep(1);
+            Thread.sleep(100);
         }
     }
 
-
-    /***
-     *
-     * 定时任务，每隔一秒刷新一次界面，获取最新的交易记录
-     * @param driver "浏览器驱动"
-     */
-    private static void task(WebDriver driver){
-        final WebDriver drivers = driver;
-        TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-                //找到第一条交易记录的位置
-                WebElement elemAmount = drivers.findElements(By.className("amount-pay")).get(0);
-                // 获取交易金额
-                String amountValue = elemAmount.getText();
-                System.out.println(amountValue);
-                // 刷新界面
-                drivers.navigate().refresh();
-                // 等待加载完成
-                drivers.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-
-            }
-        };
-        Timer timer = new Timer();
-        long delay = 1000;
-        long period = 1000;
-        timer.scheduleAtFixedRate(task,delay,period);
-    }
-
-    /***
-     *
-     * 检测元素是否存在
-     *
-     * @param driver "浏览器驱动"
-     * @param elem "要测试的元素"
-     * @return "存在则返回yes，不存在则返回false
-     */
-    private static boolean isElemAppear(WebDriver driver,String elem){
-        try{
-            driver.findElement(By.className(elem));
-            return true;
-        }catch (NoSuchElementException e){
-            return false;
-        }
-    }
 }
