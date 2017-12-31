@@ -17,8 +17,8 @@
   Selenium 是一个用于Web应用程序测试的工具。Selenium测试直接运行在浏览器中，就像真正的用户在操作一样。支持的浏览器包括IE（7, 8, 9, 10, 11），Mozilla Firefox，Safari，Google Chrome，Opera等。
   与其他测试工具相比，使用 Selenium 的最大好处是：
   - Selenium 测试直接在浏览器中运行，就像真实用户所做的一样。Selenium 测试可以在 Windows、Linux 和 Macintosh上的 Internet Explorer、Mozilla 和 Firefox 中运行。其他测试工具都不能覆盖如此多的平台。
-  - 通过编写模仿用户操作的 Selenium 测试脚本，可以从终端用户的角度来测试应用程序。通过在不同浏览器中运行测试，更容易发现浏览器的不兼容性。
-所以在这里我是利用了Selenium的测试功能实现了模拟登录的过程。
+  - 通过编写模仿用户操作的 Selenium 测试脚本，可以从终端用户的角度来测试应用程序。通过在不同浏览器中运行测试，更容易发现浏览器的不兼容性。    
+   所以在这里我是利用了Selenium的测试功能实现了模拟登录的过程。   
   在使用Selenium后，成功的进入了网站的下一个界面了，但是第一次登录强制一定要输入手机验证码，因此要完全实现登录进该网站，必须修改Headers,自行在Headers添加cookies，但是Selenium并不允许修改Headers内容，所以我找到了使用代理的方法来修改Headers。
   
   
