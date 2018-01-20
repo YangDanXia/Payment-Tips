@@ -40,8 +40,19 @@ GitHub项目说明：[BrowserMob-Proxy的使用说明](https://github.com/lightb
    <version>2.1.5</version>
 </dependency>
  ````
-在本程序里我使用了两种显示方法：一是用有界面浏览器Chrome（可自行选择其他浏览器的驱动），二是无界面的PhantomJS.  
-由于在同一个工程里，当使用PhantomJS时，会发生冲突，因为PhantomJS的依赖关系会影响到chromeDriver的使用，所以我分开了两个工程：By chromeDriver和By phantomJS。两者主要是pom.xml文件有大的区别。
+在本程序里我测试了三种显示方法：一是用有界面浏览器Chrome，二是用有界面浏览器的firefox,三是无界面的PhantomJS.  
+测试发现，chrome运行速度是最快的，firefox遇到的bug是最少的，PhantomJS是最不稳定的;
+要注意的是在不能在同一个工程中测试三种方法，因为他们之间的依赖关系会互相影响，从而发生冲突。
+所以我分开了三个工程：By chromeDriver、By geckoDriver和By phantomJS。三者主要是pom.xml文件有大的区别。
+若使用的是geckodriver则需要添加依赖关系：   
+````
+<dependency>
+    <groupId>org.seleniumhq.selenium</groupId>
+    <artifactId>selenium-firefox-driver</artifactId>
+    <version>3.8.0</version>
+</dependency>    
+ ````  
+
 若使用的是PhantomJS则需要添加依赖关系：   
 ````
         <dependency>
@@ -62,9 +73,8 @@ GitHub项目说明：[BrowserMob-Proxy的使用说明](https://github.com/lightb
  ````  
 
 
- 
-在这里为什么我要使用代理呢？是因为我需要修改header，需要在请求头里添加,而Selenium本身是不支持修改header的，所以只能借助BrowserMob-Proxy来实现。
-在header添加cookies的函数用法是：
+添加cookie可以通过selenium之间添加，也可以通过代理添加，我使用的代理是BrowserMob-Proxy。
+在header添加cookies的函数用法是：（要注意，在进入到相应网站后再进行添加）
 ````
  BrowserMobProxy proxy = new BrowserMobProxyServer();
  proxy.start(8181); //端口号自由选择
