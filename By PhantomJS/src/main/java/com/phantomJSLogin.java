@@ -8,14 +8,14 @@ import net.lightbody.bmp.client.ClientUtil;
 import net.lightbody.bmp.filters.RequestFilter;
 import net.lightbody.bmp.util.HttpMessageContents;
 import net.lightbody.bmp.util.HttpMessageInfo;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Proxy;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -30,7 +30,7 @@ public class phantomJSLogin {
 
 
         BrowserMobProxy proxy = new BrowserMobProxyServer();
-        proxy.start(8181);
+        proxy.start(8185);
         // get the Selenium proxy object
         Proxy seleniumProxy = ClientUtil.createSeleniumProxy(proxy);
 
@@ -39,8 +39,10 @@ public class phantomJSLogin {
         capabilities.setCapability(CapabilityType.PROXY, seleniumProxy);
 
         // 使用PhantomJS
-        System.setProperty("phantomjs.binary.path","F:\\Git\\Payment-Tips\\By PhantomJS\\lib\\phantomjs-2.1.1-windows\\bin\\phantomjs.exe");
+//        System.setProperty("phantomjs.binary.path","phantomjs-2.1.1-linux-x86_64/bin/phantomjs");
+        System.setProperty("phantomjs.binary.path","lib/phantomjs-2.1.1-windows/bin/phantomjs.exe");
         WebDriver driver = new PhantomJSDriver();
+
 
         proxy.addRequestFilter(new RequestFilter() {
             @Override
@@ -62,12 +64,12 @@ public class phantomJSLogin {
 
         //在界面找到用户名输入栏
         WebElement elemUsername = driver.findElement(By.name("logonId"));
-        phantomJSLogin.wait_input(elemUsername,"...");
+        phantomJSLogin.wait_input(elemUsername,"13420116914");
         Thread.sleep(10);
 
         //找到密码输入栏
         WebElement elemPassword = driver.findElement(By.name("password_rsainput"));
-        phantomJSLogin.wait_input(elemPassword,"...");
+        phantomJSLogin.wait_input(elemPassword,"ydx73735273.");
         Thread.sleep(10);
 
         // 获取页面元素:点击确认按钮
@@ -82,12 +84,14 @@ public class phantomJSLogin {
         String current_url = driver.getCurrentUrl();
 
         if(current_url.indexOf("checkSecurity")>0){
-            System.out.println("请输入手机验证码");
+            System.out.println("Please Enter Your  Phone Verification Code:");
             proxy.stop();
             driver.close();
             driver.quit();
             return;
         }
+
+        System.out.println("Login Successfully!");
         // 每秒刷新一次界面，并获取数据
         phantomJSLogin.task(driver);
 
@@ -105,7 +109,7 @@ public class phantomJSLogin {
         for (int i=0;i<str.length;i++){
             String c = String.valueOf(str[i]);
             elem.sendKeys(c);
-            Thread.sleep(100);
+            Thread.sleep(50);
         }
     }
 
@@ -116,25 +120,58 @@ public class phantomJSLogin {
      */
     protected static void task(WebDriver driver){
         final WebDriver drivers = driver;
+//        task为要执行的任务
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                //找到第一条交易记录的位置
-                WebElement elemAmount = drivers.findElements(By.className("amount-pay")).get(0);
+                Boolean isExist;
+                do{
+                    // 刷新界面
+                    drivers.navigate().refresh();
+//                    drivers.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+                    isExist = phantomJSLogin.isElemAppear(drivers,"amount-pay");
+                    SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss:SSS");
+                    System.out.println("Waiting...:"+df.format(new Date()));
+                }while(!isExist);
+                WebElement elemAmount = drivers.findElement(By.className("amount-pay"));
                 // 获取交易金额
                 String amountValue = elemAmount.getText();
                 System.out.println(amountValue);
-                // 刷新界面
-                drivers.navigate().refresh();
-                // 等待加载完成
-                drivers.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-
             }
         };
-        Timer timer = new Timer();
-        long delay = 1000;
-        long period = 1000;
-        timer.scheduleAtFixedRate(task,delay,period);
+         Timer timer = new Timer();
+         long delay = 500;
+         long period = 1000;
+//         等待delay时间后执行任务，每隔period时间执行一次
+         timer.scheduleAtFixedRate(task,delay,period);
+    }
+
+    /***
+     *
+     * 检测元素是否存在
+     *
+     * @param driver "浏览器驱动"
+     * @param elem "要测试的元素"
+     * @return "存在则返回yes，不存在则返回false
+     */
+    private static boolean isElemAppear(WebDriver driver,String elem){
+        try{
+            driver.findElement(By.className(elem));
+            return true;
+        }catch (NoSuchElementException e){
+            return false;
+        }
+    }
+
+    /***
+     *
+     * 关闭程序
+     *
+     */
+    protected void shutdown(WebDriver driver,BrowserMobProxy proxy){
+        proxy.stop();
+        driver.close();
+        driver.quit();
     }
 
 }
