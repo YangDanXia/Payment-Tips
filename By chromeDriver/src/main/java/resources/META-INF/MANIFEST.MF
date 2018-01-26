@@ -20,5 +20,5 @@ Class-Path: libs/commons-exec-1.1.jar libs/cssparser-0.9.5.jar libs/xe
  .7.1.jar libs/selenium-api-2.16.1.jar libs/selenium-firefox-driver-2.
  16.1.jar libs/selenium-remote-driver-2.16.1.jar libs/json-20080701.ja
  r libs/platform-3.4.0.jar
-Main-Class: com.ChromeLogin
+Main-Class: demo.ChromeLogin
 

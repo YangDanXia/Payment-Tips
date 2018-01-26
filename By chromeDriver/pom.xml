@@ -25,7 +25,7 @@
                     <archive>
                         <manifest>
                             <mainClass>
-                                com.FirefoxLogin
+                                proxy.demo
                             </mainClass>
                         </manifest>
                     </archive>
@@ -60,6 +60,12 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>21.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.struts</groupId>
+            <artifactId>struts2-core</artifactId>
+            <version>2.5.5</version>
         </dependency>
     </dependencies>
 
