@@ -16,17 +16,19 @@ class ConfigureChrome extends Configure {
 //        禁用扩展
         chromeOptions.addArguments("--disable-extensions");
 //        使用无头模式运行
-//        chromeOptions.addArguments("--headless");
+        chromeOptions.addArguments("--headless");
 //        禁用GPU
         chromeOptions.addArguments("--display-gpu");
 //        启动无沙盒模式运行
         chromeOptions.addArguments("--no-sandbox");
+//        使用本地用户数据
         chromeOptions.addArguments("--profile-directory=Default");
-        chromeOptions.addArguments("user-data-dir="+"path");
+//        chromeOptions.addArguments("user-data-dir=C:/Users/Administrator/AppData/Local/Google/Chrome/User Data");
+        chromeOptions.addArguments("user-data-dir=/home/ydx/.config/google-chrome");
 
 //         禁止加载图片
         Map<String,Object> prefs = new HashMap<String, Object>();
-//        prefs.put("profile.managed_default_content_settings.images", 0);
+        prefs.put("profile.managed_default_content_settings.images", 2);
         chromeOptions.setExperimentalOption("prefs",prefs);
 
         return chromeOptions;

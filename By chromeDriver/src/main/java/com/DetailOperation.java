@@ -1,16 +1,19 @@
 package com;
 
-import org.apache.http.client.utils.DateUtils;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.io.*;
-import java.util.Date;
-import java.util.Scanner;
-import java.util.Set;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.util.*;
 
 public class DetailOperation extends Operation{
+
+    private String logonId;
+    private String password;
 
     @Override
     public void setUrl(String url) {
@@ -19,22 +22,51 @@ public class DetailOperation extends Operation{
     }
 
     @Override
-    public void signIn() {
+    public void getInfo() {
+        try{
+            File paramFile = new File("info.properties");
+            Properties props = new Properties();
+            if(paramFile.exists()){
+                props.load(new FileInputStream("info.properties"));
+                logonId = props.getProperty("logonId");
+                password = props.getProperty("password");
+            }else{
+                paramFile.createNewFile();
+                System.out.println("Input Your ID:");
+                Scanner scan = new Scanner(System.in);
+                if(scan.hasNext()){
+                    logonId = scan.next();
+                    props.setProperty("logonId",logonId);
+                }
+                System.out.println("Input Your Password:");
+                if(scan.hasNext()){
+                    password = scan.next();
+                    props.setProperty("password",password);
+                }
+                props.store(new FileOutputStream("info.properties"),"");
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
 
+    }
+
+
+    @Override
+    public void signIn() {
+        getInfo();
 //        选择账密登录的方法
         WebElement elemLoginMethod = driver.findElement(By.id("J-loginMethod-tabs")).findElements(By.tagName("li")).get(1);
-
         try{
             Thread.sleep(2);
             elemLoginMethod.click();
 //            在界面找到用户名/密码输入栏
-//            findElemToInput(driver,"logonId","");
-            findElemToInput(driver,"password_rsainput","");
+            findElemToInput(driver,"logonId",logonId);
+            findElemToInput(driver,"password_rsainput",password);
 //            获取页面元素:点击确认按钮
             WebElement elemSubmit = driver.findElement(By.id("J-login-btn"));
-//            loadCookies();
-//            Thread.sleep(100);
-//            elemSubmit.click();
+            elemSubmit.click();
+
         }catch (InterruptedException e){
             e.printStackTrace();
         }
@@ -58,13 +90,6 @@ public class DetailOperation extends Operation{
                 WebElement elemSubmit = driver.findElement(By.className("ui-button"));
                 Thread.sleep(2);
                 elemSubmit.click();
-
-//              当当前网站还处于loginResultDispatch.htm或者 checkSecurity.htm 则表示还未跳转成功
-                do{
-                    System.out.println("Jumping...");
-                }while(driver.getCurrentUrl().indexOf("loginResultDispatch")>0);
-
-                System.out.println("Login Successfully !");
             } catch(InterruptedException e){
                 e.printStackTrace();
             }
@@ -72,58 +97,72 @@ public class DetailOperation extends Operation{
     }
 
     @Override
-    public void loadCookies() {
-        driver.manage().deleteAllCookies();
-        File file = new File("F:\\Git\\Payment-Tips\\By chromeDriver\\lib\\cookies.txt");
-        BufferedReader br;
-        try {
-            br = new BufferedReader(new FileReader(file));
-            String line = null;
-            while ((line=br.readLine())!=null) {
-                String[] cookieFilds = line.split(";");
-                String name = cookieFilds[0].trim();
-                String value = cookieFilds[1].trim();
-                String domain = cookieFilds[2].trim();
-                String path = cookieFilds[3].trim();
-                Date expire =  DateUtils.parseDate(cookieFilds[4]);
-                Cookie cookie = new Cookie(name, value,domain,path,expire);
-                System.out.println(cookie);
-                driver.manage().addCookie(cookie);
-            }
-            br.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("cookies文件不存在，调用saveCookie_mjd方法重新保存cookies");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void task() {
+        final String[] currentUrl = new String[1];
+        TimerTask task = new TimerTask() {
+        @Override
+         public void run() {
+           try{
+               currentUrl[0] = driver.getCurrentUrl();
+               WebDriverWait wait = new WebDriverWait(driver, 3);
+//             找到第一条交易记录的位置
+               WebElement elemAmount = driver.findElements(By.className("amount-pay")).get(0);
+               wait.until(ExpectedConditions.attributeToBeNotEmpty(elemAmount,"class"));
+//             获取交易金额
+               String amountValue = elemAmount.getText();
+               logger = getLogger();
+               logger.info(amountValue);
+//             刷新界面
+               driver.navigate().refresh();
+           }catch(IndexOutOfBoundsException e){
+               logger.info("CurrentUrl:"+currentUrl[0]);
+               logger.info("Reconnecting...");
+               if(currentUrl[0].contains("auth.alipay.com")){
+                   logger.info("The program was interrupted");
+                   System.exit(0);
+               }else if(currentUrl[0].contains("render.alipay.com")){
+                   driver.get("https://my.alipay.com/portal/i.htm?referer=https%3A%2F%2Fauthem14.alipay.com%2Flogin%2Findex.htm");
+               }else{
+                   driver.get(currentUrl[0]);
+               }
+           }catch (Exception e){
+               logger.error(e.toString());
+               driver.quit();
+               driver.close();
+               System.exit(0);
+           }
+         }
+      };
+        Timer timer = new Timer();
+        long delay = 1000;
+        long period = 1000;
+//         等待delay时间后执行任务，每隔period时间执行一次
+        timer.scheduleAtFixedRate(task,delay,period);
     }
 
-
     @Override
-    public void saveCookies() {
-        //      获取header中cookie的值
-        Set<Cookie> cookies = driver.manage().getCookies();
-        File cookieFile = new File("F:\\Git\\Payment-Tips\\By chromeDriver\\lib\\cookies.txt");
-        try{
-            if(cookieFile.exists()){
-                cookieFile.delete();
-                cookieFile.createNewFile();
+    public void isEnter() {
+        int percentage = 0;
+        logger = getLogger();
+        while(!driver.getCurrentUrl().contains("portal/i.htm")){
+ //        当处于中转页面时
+            while(driver.getCurrentUrl().indexOf("loginResultDispatch")>0){
+                percentage +=10;
+                logger.info("Jumping:"+percentage+"%");
             }
-            BufferedWriter bw = new BufferedWriter(new FileWriter(cookieFile));
-            for (Cookie cookie : cookies) {
-                String name = cookie.getName();
-                String value = cookie.getValue();
-                String domain = cookie.getDomain();
-                String path = cookie.getPath();
-                Date expiry = cookie.getExpiry();
-                bw.write(name+";"+value+";"+domain+";"+path+";"+expiry+";");
-                bw.newLine();
+            while(driver.getCurrentUrl().contains("checkSecurity")&& !driver.getCurrentUrl().contains("i.htm")){
+                logger.info("Located on the checkSecurity");
+                checkSecurity();
             }
-            bw.flush();
-            bw.close();
-        }catch (IOException e){
-            e.printStackTrace();
+            while(driver.getCurrentUrl().contains("authem14.alipay.com/login/index.htm")){
+                System.out.println(driver.findElement(By.className("sl-error-text")).getText());
+                File paramFile = new File("info.properties");
+                paramFile.delete();
+                driver.findElement(By.name("logonId")).clear();
+                signIn();
+            }
         }
+        logger.info("Login Successfully !");
     }
 }
 
