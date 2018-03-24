@@ -1,7 +1,7 @@
 package com;
 
 import org.apache.log4j.PropertyConfigurator;
-import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.chrome.ChromeOptions; 
 import org.openqa.selenium.firefox.FirefoxBinary;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
@@ -12,6 +12,7 @@ import java.util.Map;
 class ConfigureChrome extends Configure {
 
     public ChromeOptions ChromeOptions() {
+
         ChromeOptions chromeOptions = new ChromeOptions();
 //        禁用扩展
         chromeOptions.addArguments("--disable-extensions");
@@ -24,8 +25,8 @@ class ConfigureChrome extends Configure {
 //        使用本地用户数据
         chromeOptions.addArguments("--profile-directory=Default");
 //        chromeOptions.addArguments("user-data-dir=C:/Users/Administrator/AppData/Local/Google/Chrome/User Data");
-        chromeOptions.addArguments("user-data-dir=/home/ydx/.config/google-chrome");
-
+//        chromeOptions.addArguments("user-data-dir=/home/ydx/.config/google-chrome"); // 腾讯云服务器上Debian操作系统
+        chromeOptions.addArguments("user-data-dir=/home/godog/.config/chromium");
 //         禁止加载图片
         Map<String,Object> prefs = new HashMap<String, Object>();
         prefs.put("profile.managed_default_content_settings.images", 2);
