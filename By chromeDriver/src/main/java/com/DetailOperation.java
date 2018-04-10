@@ -1,5 +1,6 @@
 package com;
 
+import jni.SendMsg;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -72,19 +73,42 @@ public class DetailOperation extends Operation{
         }
     }
 
+//    @Override
+//    public void checkSecurity() {
+////        System.out.println("Input Your Riskcode:");
+//        Scanner scan = new Scanner(System.in);
+//        if(scan.hasNext()) {
+//            try {
+//                String code = scan.next();
+////              找到验证码输入栏
+//                WebElement elemInput = driver.findElement(By.name("riskackcode"));
+//                Thread.sleep(2);
+//                elemInput.click();
+//                findElemToInput(driver, "riskackcode", code);
+//                scan.close();
+//
+////              获取页面元素:点击确认按钮
+//                WebElement elemSubmit = driver.findElement(By.className("ui-button"));
+//                Thread.sleep(2);
+//                elemSubmit.click();
+//            } catch(InterruptedException e){
+//                e.printStackTrace();
+//            }
+//        }
+//    }
+
     @Override
     public void checkSecurity() {
-        System.out.println("Input Your Riskcode:");
-        Scanner scan = new Scanner(System.in);
-        if(scan.hasNext()) {
+        SendMsg sendmsg = new SendMsg();
+        String code = sendmsg.ReceiveMsgFromC();
+        if(code != null) {
             try {
-                String code = scan.next();
+                logger.info("The code:"+code);
 //              找到验证码输入栏
                 WebElement elemInput = driver.findElement(By.name("riskackcode"));
                 Thread.sleep(2);
                 elemInput.click();
                 findElemToInput(driver, "riskackcode", code);
-                scan.close();
 
 //              获取页面元素:点击确认按钮
                 WebElement elemSubmit = driver.findElement(By.className("ui-button"));
